@@ -44,13 +44,14 @@ export default function ResumeForm() {
                         <FormikStepper initialValues={{
                             firstName: '', lastName: '', email: '', phoneNumber: [{ number: '' }], city: '',
                             country: '', summary: '', jobTitle: '',
-                            education: [{ degree: '', institution: '', fromYear: '', toYear: '', city: '', country: '' }],
+                            education: [{ degree: '', institution: '', score: '', fromYear: '', toYear: '', city: '', country: '' }],
                             keySkills: [{ skill: '' }], projects: [{ projectTitle: '', features: [{ feature: '' }] }],
                             certifications: [{ certificateFor: '', certificateIssuer: '', date: '' }],
                             languages: [{ language: '' }], hobbies: [{ hobby: '' }], socialMedia: [{ name: '', link: '' }]
                         }}
                             onSubmit={(values) => console.log("values", values)}>
 
+                            {/* Genaral Info Section*/}
                             <FormikStep label="General info">
                                 <Grid container spacing={3} >
                                     <Grid item xs={12} sm={6}>
@@ -80,6 +81,53 @@ export default function ResumeForm() {
                                                         <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
                                                             <Grid item xs={8} sm={8}>
                                                                 <Field fullWidth name={`phoneNumber[${index}].number`} component={TextField} label="Phone Number" size="small" />
+                                                            </Grid>
+
+                                                            <Grid item xs={3} sm={3}>
+                                                                <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Delete</Button>
+                                                            </Grid>
+                                                        </Grid>
+                                                    ))}
+                                                    <Grid item>
+                                                        {typeof form.errors.phoneNumber === "string" ? <Typography color="error">{form.errors.phoneNumber}</Typography> : null}
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Button onClick={() => push({ number: '' })} variant="outlined" color="primary">Add Another Number</Button>
+                                                    </Grid>
+                                                </>
+                                            )}
+                                        </FieldArray>
+                                    </Grid>
+
+                                    <Grid item xs={12} className={classes.bottomMargin}>
+                                        <Field fullWidth component={TextField} name="summary" label="Add a Bio" multiline minRows={1} maxRows={7} />
+                                    </Grid>
+                                </Grid>
+                            </FormikStep>
+
+                            {/* Eaducation Section */}
+                            <FormikStep label="Education">
+                                <Grid container spacing={3} >
+                                    <Grid item xs={12} sm={12}>
+                                        <FieldArray name="education">
+                                            {({ push, remove, form }) => (
+                                                <>
+                                                    {form.values.education.map((_, index) => (
+                                                        <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
+                                                            <Grid item xs={12} sm={12}>
+                                                                <Field fullWidth name={`education[${index}].institution`} component={TextField} label="Institution Name" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`education[${index}].degree`} component={TextField} label="Degree Name" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`education[${index}].score`} component={TextField} label="Percentage Obtained" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`education[${index}].city`} component={TextField} label="City" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`education[${index}].country`} component={TextField} label="Country" size="small" />
                                                             </Grid>
 
                                                             <Grid item xs={3} sm={3}>
@@ -146,7 +194,7 @@ export function FormikStepper({ children, ...props }) {
                         {childrenArray.map((child, index) => (
                             <Step key={child.props.label} completed={step > index || completed}>
                                 <StepLabel>{child.props.label}</StepLabel>
-                                <hr />
+
                             </Step>
                         ))}
                     </Stepper>
