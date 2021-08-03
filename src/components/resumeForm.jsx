@@ -25,10 +25,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "10px"
     },
     step_label_root: {
-        fontSize: '12px',
-    },
-    step_label_active: {
-        fontSize: "14px",
+        fontSize: '0',
     },
     icon_root: {
         fontSize: "20px",
@@ -38,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "20px",
     },
     icon_active: {
-        fontSize: "24px",
+        fontSize: "25px",
     }
 }))
 
@@ -65,7 +62,7 @@ export default function ResumeForm() {
 
                             {/* Genaral Info Section*/}
                             <FormikStep label="General info">
-                                <Box display={{ xs: 'block', sm: 'none' }} mb={2}>
+                                <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">General info</Typography>
                                 </Box>
                                 <Grid container spacing={3} >
@@ -125,7 +122,7 @@ export default function ResumeForm() {
 
                             {/* Eaducation Section */}
                             <FormikStep label="Education">
-                                <Box display={{ xs: 'block', sm: 'none' }} mb={2}>
+                                <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">Education</Typography>
                                 </Box>
                                 <Grid container spacing={3} >
@@ -182,7 +179,7 @@ export default function ResumeForm() {
 
                             {/* Certifications Section*/}
                             <FormikStep label="Certifications">
-                                <Box display={{ xs: 'block', sm: 'none' }} mb={2}>
+                                <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">Certifications</Typography>
                                 </Box>
                                 <Grid container spacing={3} >
@@ -227,7 +224,7 @@ export default function ResumeForm() {
                             {/* Skills & Projects */}
                             <FormikStep label="Skills &amp; Projects">
                                 {/* Skills Section */}
-                                <Box display={{ xs: 'block', sm: 'none' }} mb={2}>
+                                <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">Skills</Typography>
                                 </Box>
                                 <Grid container spacing={3} >
@@ -262,7 +259,7 @@ export default function ResumeForm() {
                                     </Grid>
                                     {/* Projects Section */}
                                     <Grid item xs={12} sm={12}>
-                                        <Box display={{ xs: 'block', sm: 'none' }} mt={3} mb={-1}>
+                                        <Box display={{ xs: 'block', sm: 'block' }} mt={3} mb={-1}>
                                             <Typography align="center" variant="h5" color="textSecondary">Projects</Typography>
                                         </Box>
                                     </Grid>
@@ -304,7 +301,7 @@ export default function ResumeForm() {
 
                             {/* Additional Info */}
                             <FormikStep label="Additional Info">
-                                <Box display={{ xs: 'block', sm: 'none' }} mb={2}>
+                                <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">Additional Info</Typography>
                                 </Box>
                                 {/* Languages */}
@@ -424,11 +421,11 @@ export function FormikStepper({ children, ...props }) {
             {({ isSubmitting, values, errors }) => (
                 <Form autoComplete="off">
 
-                    <Box display={{ xs: 'none', sm: 'block' }}>
+                    <Box display={{ xs: 'block', sm: 'block' }}>
                         <Stepper alternativeLabel activeStep={step}>
                             {childrenArray.map((child, index) => (
                                 <Step key={child.props.label} completed={step > index || completed} >
-                                    <StepLabel StepIconProps={{ classes: { root: classes.icon_root, completed: classes.icon_completed, active: classes.icon_active } }} classes={{ label: classes.step_label_root, active: classes.step_label_active }}>{child.props.label}</StepLabel>
+                                    <StepLabel StepIconProps={{ classes: { root: classes.icon_root, completed: classes.icon_completed, active: classes.icon_active } }} classes={{ label: classes.step_label_root }}>{child.props.label}</StepLabel>
                                 </Step>
                             ))}
                         </Stepper>
