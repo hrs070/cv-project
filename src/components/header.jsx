@@ -5,7 +5,6 @@ import AppIcon from "./images/cv.png";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        backgroundColor: "#1976d2",
         marginBottom: theme.spacing(3)
     },
     icon: {
