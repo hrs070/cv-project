@@ -8,7 +8,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { object, number, string, boolean, array, ValidationError } from 'yup';
+import { object, string, array } from 'yup';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
     icon_active: {
         fontSize: "25px",
-    }
+    },
 }))
 
 export default function ResumeForm() {
@@ -53,7 +53,7 @@ export default function ResumeForm() {
                         <FormikStepper initialValues={{
                             firstName: '', lastName: '', email: '', phoneNumber: [{ number: '' }], city: '',
                             country: '', summary: '', jobTitle: '',
-                            education: [{ degree: '', institution: '', score: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' }],
+                            education: [{ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' }],
                             keySkills: [{ skill: '' }], projects: [{ projectTitle: '', description: '' }],
                             certifications: [{ certificateFor: '', certificateIssuer: '', date: new Date() }],
                             languages: [{ language: '' }], hobbies: [{ hobby: '' }], linkedIn: '', github: ''
@@ -61,28 +61,37 @@ export default function ResumeForm() {
                             onSubmit={(values) => console.log("values", values)}>
 
                             {/* Genaral Info Section*/}
-                            <FormikStep label="General info">
+                            <FormikStep label="General info" validationSchema={object({
+                                firstName: string("Must be a valid string").required("First Name is Required").matches(/^[aA-zZ\s.]+$/, "Only alphabets are allowed for First Name").max(30, "Max 30 characters allowed"),
+                                lastName: string("Must be a valid string").required("Last Name is Required").matches(/^[aA-zZ\s.]+$/, "Only alphabets are allowed for Last Name").max(30, "Max 30 characters allowed"),
+                                jobTitle: string("Must be a valid string").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(50, "Max 50 characters allowed"),
+                                email: string().required("Email is Required").email("Must be a valid email").max(50, "Max 50 characters allowed"),
+                                city: string().required("City is Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for City Name").max(30, "Max 30 characters allowed"),
+                                country: string().required("Country is Required").matches(/^[aA-zZ\s.]+$/, "Only alphabets are allowed for Country Name").max(56, "Max 56 characters allowed"),
+                                phoneNumber: array(object({ number: string().required("Phone number is Required").matches(/^([+(?=0-9){3}])?[0-9]{10,12}$/, "Please enter a Valid Number") })).min(1, "At least 1 Phone Number is required").max(2, "Upto 2 Phone Numbers allowed")
+                            })}>
+
                                 <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">General info</Typography>
                                 </Box>
                                 <Grid container spacing={3} >
                                     <Grid item xs={12} sm={6}>
-                                        <Field fullWidth component={TextField} name="firstName" label="First Name" />
+                                        <Field fullWidth component={TextField} name="firstName" label="First Name *" />
                                     </Grid>
                                     <Grid item xs={12} sm={6} >
-                                        <Field fullWidth component={TextField} name="lastName" label="Last Name" />
+                                        <Field fullWidth component={TextField} name="lastName" label="Last Name *" />
                                     </Grid>
                                     <Grid item xs={12} sm={6} >
                                         <Field fullWidth component={TextField} name="jobTitle" label="Job Title" />
                                     </Grid>
                                     <Grid item xs={12} sm={6} >
-                                        <Field fullWidth component={TextField} name="email" label="Email" />
+                                        <Field fullWidth component={TextField} name="email" label="Email *" />
                                     </Grid>
                                     <Grid item xs={12} sm={6} >
-                                        <Field fullWidth component={TextField} name="city" label="City" />
+                                        <Field fullWidth component={TextField} name="city" label="City *" />
                                     </Grid>
                                     <Grid item xs={12} sm={6} >
-                                        <Field fullWidth component={TextField} name="country" label="Country" />
+                                        <Field fullWidth component={TextField} name="country" label="Country *" />
                                     </Grid>
 
                                     <Grid item xs={12} sm={12}>
@@ -92,7 +101,7 @@ export default function ResumeForm() {
                                                     {form.values.phoneNumber.map((_, index) => (
                                                         <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
                                                             <Grid item xs={8} sm={8}>
-                                                                <Field fullWidth name={`phoneNumber[${index}].number`} component={TextField} label="Phone Number" size="small" />
+                                                                <Field fullWidth name={`phoneNumber[${index}].number`} component={TextField} label="Phone Number *" size="small" />
                                                             </Grid>
                                                             <Grid container xs={4} sm={3} justifyContent="center">
                                                                 <Grid item >
@@ -121,7 +130,17 @@ export default function ResumeForm() {
                             </FormikStep>
 
                             {/* Eaducation Section */}
-                            <FormikStep label="Education">
+                            <FormikStep label="Education" validationSchema={object({
+                                education: array(object({
+                                    institutionName: string().required("Institution Name is Required").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    degree: string().required("Degree is Required").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    specialization: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    percentage: string().matches(/^100%?$|^[0-9]{1,2}%?$|^[0-9]{1,2}\.[0-9]{1,2}%?$/, "Enter Percentage or CGPA Obtained"),
+                                    city: string().required("Institution City is Required").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    country: string().required("Institution Country is Required").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                })).min(1, "At least 1 Education Detail is required").max(5, "Upto 5 Education Detail accepted")
+                            })}>
+
                                 <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">Education</Typography>
                                 </Box>
@@ -133,19 +152,22 @@ export default function ResumeForm() {
                                                     {form.values.education.map((_, index) => (
                                                         <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
                                                             <Grid item xs={12} sm={12}>
-                                                                <Field fullWidth name={`education[${index}].institution`} component={TextField} label="Institution Name" size="small" />
+                                                                <Field fullWidth name={`education[${index}].institutionName`} component={TextField} label="Institution Name *" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={12} sm={12}>
+                                                                <Field fullWidth name={`education[${index}].degree`} component={TextField} label="Degree / High School *" size="small" />
                                                             </Grid>
                                                             <Grid item xs={12} sm={6}>
-                                                                <Field fullWidth name={`education[${index}].degree`} component={TextField} label="Degree / High School" size="small" />
+                                                                <Field fullWidth name={`education[${index}].specialization`} component={TextField} label="Specialization" size="small" />
                                                             </Grid>
                                                             <Grid item xs={12} sm={6}>
-                                                                <Field fullWidth name={`education[${index}].score`} component={TextField} label="Percentage Obtained" size="small" />
+                                                                <Field fullWidth name={`education[${index}].percentage`} component={TextField} label="Percentage Obtained" size="small" />
                                                             </Grid>
                                                             <Grid item xs={6} sm={6}>
-                                                                <Field fullWidth name={`education[${index}].city`} component={TextField} label="City" size="small" />
+                                                                <Field fullWidth name={`education[${index}].city`} component={TextField} label="City *" size="small " />
                                                             </Grid>
                                                             <Grid item xs={6} sm={6}>
-                                                                <Field fullWidth name={`education[${index}].country`} component={TextField} label="Country" size="small" />
+                                                                <Field fullWidth name={`education[${index}].country`} component={TextField} label="Country *" size="small" />
                                                             </Grid>
                                                             <Grid item xs={6} sm={6}>
                                                                 <Field fullWidth name={`education[${index}].fromYear`} component={DatePicker} label="Started From" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
@@ -167,7 +189,7 @@ export default function ResumeForm() {
                                                     </Grid>
                                                     <Grid container justifyContent="center" >
                                                         <Grid item className={classes.bottomMargin}>
-                                                            <Button onClick={() => push({ degree: '', institution: '', score: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' })} variant="outlined" color="primary">Add More Education Details</Button>
+                                                            <Button onClick={() => push({ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' })} variant="outlined" color="primary">Add More Education Details</Button>
                                                         </Grid>
                                                     </Grid>
                                                 </>
@@ -178,9 +200,15 @@ export default function ResumeForm() {
                             </FormikStep>
 
                             {/* Certifications Section*/}
-                            <FormikStep label="Certifications">
+                            <FormikStep label="Certifications" validationSchema={object({
+                                certifications: array(object({
+                                    certificateFor: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    certificateIssuer: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed")
+                                }))
+                            })}>
+
                                 <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
-                                    <Typography align="center" variant="h5" color="textSecondary">Certifications</Typography>
+                                    <Typography align="center" variant="h5" color="textSecondary">Certifications (optional)</Typography>
                                 </Box>
                                 <Grid container spacing={3} >
                                     <Grid item xs={12} sm={12}>
@@ -222,7 +250,16 @@ export default function ResumeForm() {
                             </FormikStep>
 
                             {/* Skills & Projects */}
-                            <FormikStep label="Skills &amp; Projects">
+                            <FormikStep label="Skills &amp; Projects" validationSchema={object({
+                                keySkills: array(object({
+                                    skill: string().required("Add a Skill").max(50, "Max 50 characters allowed"),
+                                })).min(3, "At least 3 skills are required"),
+                                projects: array(object({
+                                    projectTitle: string().required("Add a Project Title").max(50, "Max 50 characters allowed"),
+                                    description: string().required("Add a Project Description")
+                                })).min(1, "At least 1 Project is required")
+                            })}>
+
                                 {/* Skills Section */}
                                 <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">Skills</Typography>
@@ -235,12 +272,12 @@ export default function ResumeForm() {
                                                     {form.values.keySkills.map((_, index) => (
                                                         <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
                                                             <Grid item xs={8} sm={8}>
-                                                                <Field fullWidth name={`keySkills[${index}].skill`} component={TextField} label="Key Skill" size="small" />
+                                                                <Field fullWidth name={`keySkills[${index}].skill`} component={TextField} label="Key Skill *" size="small" />
                                                             </Grid>
 
                                                             <Grid container xs={4} sm={3} justifyContent="center">
                                                                 <Grid item>
-                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Delete</Button>
+                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Remove Skill</Button>
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
@@ -270,10 +307,10 @@ export default function ResumeForm() {
                                                     {form.values.projects.map((_, index) => (
                                                         <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
                                                             <Grid item xs={12} sm={12}>
-                                                                <Field fullWidth name={`projects[${index}].projectTitle`} component={TextField} label="Project Title" size="small" />
+                                                                <Field fullWidth name={`projects[${index}].projectTitle`} component={TextField} label="Project Title *" size="small" />
                                                             </Grid>
                                                             <Grid item xs={12} sm={12}>
-                                                                <Field fullWidth name={`projects[${index}].description`} component={TextField} label="Project Description" variant="outlined" size="small" multiline minRows={2} maxRows={10} />
+                                                                <Field fullWidth name={`projects[${index}].description`} component={TextField} label="Project Description *" variant="outlined" size="small" multiline minRows={2} maxRows={10} />
                                                             </Grid>
 
                                                             <Grid container xs={12} sm={12} justifyContent="center">
@@ -300,7 +337,12 @@ export default function ResumeForm() {
                             </FormikStep>
 
                             {/* Additional Info */}
-                            <FormikStep label="Additional Info">
+                            <FormikStep label="Additional Info" validationSchema={object({
+                                languages: array(object({
+                                    language: string().required("Add a Language").max(50, "Max 50 characters allowed"),
+                                })).min(1, "At least 1 language is required"),
+                            })}>
+
                                 <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
                                     <Typography align="center" variant="h5" color="textSecondary">Additional Info</Typography>
                                 </Box>
@@ -418,7 +460,7 @@ export function FormikStepper({ children, ...props }) {
             }
         }}>
 
-            {({ isSubmitting, values, errors }) => (
+            {({ isSubmitting, values, errors, isValid }) => (
                 <Form autoComplete="off">
 
                     <Box display={{ xs: 'block', sm: 'block' }}>
@@ -438,13 +480,13 @@ export function FormikStepper({ children, ...props }) {
                             {step > 0 ? <Button disabled={isSubmitting} variant="contained" color="primary" onClick={() => setStep(currentStep => currentStep - 1)}>Back</Button> : null}
                         </Grid>
                         <Grid item>
-                            <Button startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null} disabled={isSubmitting} variant="contained" color="primary" type="submit">{isSubmitting ? "Submitting" : isLastStep() ? "Submit" : "Next"}</Button>
+                            <Button startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null} disabled={!isValid || isSubmitting} variant="contained" color={"primary"} type="submit">{isSubmitting ? "Generating" : isLastStep() ? "Generate" : "Next"}</Button>
                         </Grid>
                     </Grid>
                     {/* Output */}
-                    <Grid item>
+                    {/* <Grid item>
                         <pre>{JSON.stringify({ values, errors }, null, 4)}</pre>
-                    </Grid>
+                    </Grid> */}
                 </Form>
             )
             }

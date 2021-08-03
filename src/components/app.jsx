@@ -10,9 +10,8 @@ export default function App() {
         palette: {
             primary: {
                 main: "#1976d2",
-
-            },
-        }
+            }
+        },
     })
 
 
