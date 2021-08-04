@@ -10,7 +10,6 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { object, string, array } from 'yup';
 
-
 const useStyles = makeStyles((theme) => ({
     errorColor: {
         color: theme.palette.error.main,
@@ -277,7 +276,7 @@ export default function ResumeForm() {
 
                                                             <Grid container xs={4} sm={3} justifyContent="center">
                                                                 <Grid item>
-                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Remove Skill</Button>
+                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Remove</Button>
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
