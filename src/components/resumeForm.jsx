@@ -38,14 +38,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function ResumeForm() {
+export default function ResumeForm({ onGenerate, displayCondition }) {
 
     const classes = useStyles();
 
     return (
 
         <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Grid container alignItems="center" justifyContent="center" >
+            <Grid container alignItems="center" justifyContent="center" style={{ display: displayCondition ? null : 'none' }}>
                 <Card raised={true} className={classes.card}>
                     <CardContent>
 
@@ -57,7 +57,7 @@ export default function ResumeForm() {
                             certifications: [{ certificateFor: '', certificateIssuer: '', date: new Date() }],
                             languages: [{ language: '' }], hobbies: [{ hobby: '' }], linkedIn: '', github: ''
                         }}
-                            onSubmit={(values) => console.log("values", values)}>
+                            onSubmit={(values) => { console.log("values", values); onGenerate() }}>
 
                             {/* Genaral Info Section*/}
                             <FormikStep label="General info" validationSchema={object({
@@ -354,7 +354,7 @@ export default function ResumeForm() {
                                                     {form.values.languages.map((_, index) => (
                                                         <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
                                                             <Grid item xs={8} sm={8}>
-                                                                <Field fullWidth name={`languages[${index}].language`} component={TextField} label="Language I Speak" size="small" />
+                                                                <Field fullWidth name={`languages[${index}].language`} component={TextField} label="Language I Speak *" size="small" />
                                                             </Grid>
 
                                                             <Grid container xs={4} sm={3} justifyContent="center">
