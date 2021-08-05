@@ -53,11 +53,12 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                             firstName: '', lastName: '', email: '', phoneNumber: [{ number: '' }], city: '',
                             country: '', summary: '', jobTitle: '',
                             education: [{ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' }],
+                            workExperience: [{ companyName: '', position: '', achievements: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' }],
                             keySkills: [{ skill: '' }], projects: [{ projectTitle: '', description: '' }],
                             certifications: [{ certificateFor: '', certificateIssuer: '', date: new Date() }],
                             languages: [{ language: '' }], hobbies: [{ hobby: '' }], linkedIn: '', github: ''
                         }}
-                            onSubmit={(values) => { console.log("values", values); onGenerate() }}>
+                            onSubmit={(values) => { onGenerate(values) }}>
 
                             {/* Genaral Info Section*/}
                             <FormikStep label="General info" validationSchema={object({
@@ -102,9 +103,11 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                             <Grid item xs={8} sm={8}>
                                                                 <Field fullWidth name={`phoneNumber[${index}].number`} component={TextField} label="Phone Number *" size="small" />
                                                             </Grid>
-                                                            <Grid container xs={4} sm={3} justifyContent="center">
-                                                                <Grid item >
-                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Delete</Button>
+                                                            <Grid item xs={4} sm={4}>
+                                                                <Grid container justifyContent="center">
+                                                                    <Grid item >
+                                                                        <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Remove</Button>
+                                                                    </Grid>
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
@@ -163,7 +166,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`education[${index}].percentage`} component={TextField} label="Percentage Obtained" size="small" />
                                                             </Grid>
                                                             <Grid item xs={6} sm={6}>
-                                                                <Field fullWidth name={`education[${index}].city`} component={TextField} label="City *" size="small " />
+                                                                <Field fullWidth name={`education[${index}].city`} component={TextField} label="City *" size="small" />
                                                             </Grid>
                                                             <Grid item xs={6} sm={6}>
                                                                 <Field fullWidth name={`education[${index}].country`} component={TextField} label="Country *" size="small" />
@@ -175,7 +178,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`education[${index}].toYear`} component={DatePicker} label="Passing Year" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
                                                             </Grid>
 
-                                                            <Grid container xs={12} sm={12} justifyContent="center">
+                                                            <Grid container justifyContent="center">
                                                                 <Grid item>
                                                                     <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove This Education</Button>
                                                                 </Grid>
@@ -189,6 +192,72 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                     <Grid container justifyContent="center" >
                                                         <Grid item className={classes.bottomMargin}>
                                                             <Button onClick={() => push({ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' })} variant="outlined" color="primary">Add More Education Details</Button>
+                                                        </Grid>
+                                                    </Grid>
+                                                </>
+                                            )}
+                                        </FieldArray>
+                                    </Grid>
+                                </Grid>
+                            </FormikStep>
+
+                            {/* Work Experience Section */}
+                            <FormikStep label="Education" validationSchema={object({
+                                workExperience: array(object({
+                                    companyName: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    position: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    achievements: string(),
+                                    city: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                    country: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
+                                }))
+                            })}>
+
+                                <Box display={{ xs: 'block', sm: 'block' }} mb={2}>
+                                    <Typography align="center" variant="h5" color="textSecondary">Work Experience (Optional)</Typography>
+                                </Box>
+                                <Grid container spacing={3} >
+                                    <Grid item xs={12} sm={12}>
+                                        <FieldArray name="workExperience">
+                                            {({ push, remove, form }) => (
+                                                <>
+                                                    {form.values.workExperience.map((_, index) => (
+                                                        <Grid container spacing={3} key={index} justifyContent="space-between" alignItems="center" className={classes.bottomMargin}>
+                                                            <Grid item xs={12} sm={12}>
+                                                                <Field fullWidth name={`workExperience[${index}].companyName`} component={TextField} label="Company Name" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={12} sm={12}>
+                                                                <Field fullWidth name={`workExperience[${index}].position`} component={TextField} label="Previous Position" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`workExperience[${index}].city`} component={TextField} label="City" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`workExperience[${index}].country`} component={TextField} label="Country" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`workExperience[${index}].fromYear`} component={DatePicker} label="From" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={6} sm={6}>
+                                                                <Field fullWidth name={`workExperience[${index}].toYear`} component={DatePicker} label="To" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={12} sm={12}>
+                                                                <Field fullWidth name={`workExperience[${index}].achievements`} component={TextField} label="Acheivements" size="small" multiline minRows={2} maxRows={7} variant="outlined" />
+                                                            </Grid>
+
+                                                            <Grid container justifyContent="center">
+                                                                <Grid item>
+                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove This Experience</Button>
+                                                                </Grid>
+                                                            </Grid>
+
+                                                        </Grid>
+                                                    ))}
+                                                    <Grid item>
+                                                        {typeof form.errors.education === "string" ? <Typography color="error">{form.errors.education}</Typography> : null}
+                                                    </Grid>
+                                                    <Grid container justifyContent="center" >
+                                                        <Grid item className={classes.bottomMargin}>
+                                                            <Button onClick={() => push({ companyName: '', position: '', achievements: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' })} variant="outlined" color="primary">Add More Experience Details</Button>
                                                         </Grid>
                                                     </Grid>
                                                 </>
@@ -226,7 +295,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`certifications[${index}].date`} component={DatePicker} label="Issued In" openTo="year" views={["year", "month"]} autoOk="true" size="small" inputVariant="outlined" />
                                                             </Grid>
 
-                                                            <Grid container xs={12} sm={12} justifyContent="center">
+                                                            <Grid container justifyContent="center">
                                                                 <Grid item>
                                                                     <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove Certificate</Button>
                                                                 </Grid>
@@ -274,9 +343,11 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`keySkills[${index}].skill`} component={TextField} label="Key Skill *" size="small" />
                                                             </Grid>
 
-                                                            <Grid container xs={4} sm={3} justifyContent="center">
-                                                                <Grid item>
-                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Remove</Button>
+                                                            <Grid item xs={4} sm={4}>
+                                                                <Grid container justifyContent="center">
+                                                                    <Grid item>
+                                                                        <Button onClick={() => remove(index)} variant="outlined" color="secondary" >Remove</Button>
+                                                                    </Grid>
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
@@ -312,7 +383,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`projects[${index}].description`} component={TextField} label="Project Description *" variant="outlined" size="small" multiline minRows={2} maxRows={10} />
                                                             </Grid>
 
-                                                            <Grid container xs={12} sm={12} justifyContent="center">
+                                                            <Grid container justifyContent="center">
                                                                 <Grid item >
                                                                     <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove Project</Button>
                                                                 </Grid>
@@ -357,9 +428,11 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`languages[${index}].language`} component={TextField} label="Language I Speak *" size="small" />
                                                             </Grid>
 
-                                                            <Grid container xs={4} sm={3} justifyContent="center">
-                                                                <Grid item>
-                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove</Button>
+                                                            <Grid item xs={4} sm={4}>
+                                                                <Grid container justifyContent="center">
+                                                                    <Grid item>
+                                                                        <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove</Button>
+                                                                    </Grid>
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
@@ -388,9 +461,11 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                             <Grid item xs={8} sm={8}>
                                                                 <Field fullWidth name={`hobbies[${index}].hobby`} component={TextField} label="My Hobby" size="small" />
                                                             </Grid>
-                                                            <Grid container xs={4} sm={3} justifyContent="center">
-                                                                <Grid item>
-                                                                    <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove</Button>
+                                                            <Grid item xs={4} sm={4}>
+                                                                <Grid container justifyContent="center">
+                                                                    <Grid item>
+                                                                        <Button onClick={() => remove(index)} variant="outlined" color="secondary">Remove</Button>
+                                                                    </Grid>
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
@@ -420,13 +495,12 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
 
                             </FormikStep>
 
-
                         </FormikStepper>
 
                     </CardContent>
                 </Card>
             </Grid>
-        </MuiPickersUtilsProvider>
+        </MuiPickersUtilsProvider >
 
     )
 }
@@ -462,15 +536,13 @@ export function FormikStepper({ children, ...props }) {
             {({ isSubmitting, values, errors, isValid }) => (
                 <Form autoComplete="off">
 
-                    <Box display={{ xs: 'block', sm: 'block' }}>
-                        <Stepper alternativeLabel activeStep={step}>
-                            {childrenArray.map((child, index) => (
-                                <Step key={child.props.label} completed={step > index || completed} >
-                                    <StepLabel StepIconProps={{ classes: { root: classes.icon_root, completed: classes.icon_completed, active: classes.icon_active } }} classes={{ label: classes.step_label_root }}>{child.props.label}</StepLabel>
-                                </Step>
-                            ))}
-                        </Stepper>
-                    </Box>
+                    <Stepper alternativeLabel activeStep={step}>
+                        {childrenArray.map((child, index) => (
+                            <Step key={child.props.label} completed={step > index || completed} >
+                                <StepLabel StepIconProps={{ classes: { root: classes.icon_root, completed: classes.icon_completed, active: classes.icon_active } }} classes={{ label: classes.step_label_root }}>{child.props.label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
 
                     {currentChild}
 

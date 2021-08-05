@@ -26,10 +26,10 @@ export default function Header({ onEdit, name }) {
                             <IconButton edge="start" >
                                 <img src={AppIcon} alt="app-icon" className={classes.icon} />
                             </IconButton>
-                            <Typography variant="h5">Resume Maker</Typography>
+                            <Typography variant="h6">CV Maker</Typography>
                         </Grid>
                     </Grid>
-                    <Button color="inherit" onClick={() => onEdit()}>{name}</Button>
+                    <Button color="inherit" variant="outlined" onClick={() => onEdit()}>{name}</Button>
                 </Grid>
             </Toolbar>
         </AppBar >

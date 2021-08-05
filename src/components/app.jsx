@@ -17,9 +17,16 @@ export default function App() {
 
     const [showOutput, setShowOutput] = useState(true);
     const [editBtnName, setEditBtnName] = useState("Preview");
-    function handleGenerate() {
-        setShowOutput(true)
+    const [outputValues, setOutputValues] = useState();
+    const [dataOnOutputPage, setDataOnOutputPage] = useState(false);
+
+    function handleGenerate(childData) {
+        setOutputValues(childData);
+        setShowOutput(false);
+        setDataOnOutputPage(true);
+        setEditBtnName("Edit");
     }
+
     function handleEdit() {
         if (showOutput) {
             setEditBtnName("Edit")
@@ -35,8 +42,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <Header onEdit={handleEdit} name={editBtnName} />
             <ResumeForm onGenerate={handleGenerate} displayCondition={showOutput} />
-            <Output displayCondition={showOutput} />
+            <Output displayCondition={showOutput} outputData={outputValues} dataOrNoDataState={dataOnOutputPage} />
         </ThemeProvider>
-
     )
 }
