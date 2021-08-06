@@ -7,6 +7,7 @@ import { DatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import LanguageIcon from '@material-ui/icons/Language';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { object, string, array } from 'yup';
 
@@ -51,12 +52,12 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
 
                         <FormikStepper initialValues={{
                             firstName: '', lastName: '', email: '', phoneNumber: [{ number: '' }], city: '',
-                            country: '', summary: '', jobTitle: '',
+                            country: '', summary: '', jobTitle: '', dob: null,
                             education: [{ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: null, toYear: null, city: '', country: '' }],
                             workExperience: [{ companyName: '', position: '', achievements: '', fromYear: null, toYear: null, city: '', country: '' }],
                             keySkills: [{ skill: '' }], projects: [{ projectTitle: '', description: '' }],
                             certifications: [{ certificateFor: '', certificateIssuer: '', date: null }],
-                            languages: [{ language: '' }], hobbies: [{ hobby: '' }], linkedIn: '', github: ''
+                            languages: [{ language: '' }], hobbies: [{ hobby: '' }], linkedIn: '', github: '', personalWebsite: '',
                         }}
                             onSubmit={(values) => { onGenerate(values) }}>
 
@@ -68,6 +69,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                 email: string().required("Email is Required").email("Must be a valid email").max(50, "Max 50 characters allowed"),
                                 city: string().required("City is Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for City Name").max(30, "Max 30 characters allowed"),
                                 country: string().required("Country is Required").matches(/^[aA-zZ\s.]+$/, "Only alphabets are allowed for Country Name").max(56, "Max 56 characters allowed"),
+                                dob: string().nullable().required("Date Of Birth is Required"),
                                 phoneNumber: array(object({ number: string().required("Phone number is Required").matches(/^([+(?=0-9){3}])?[0-9]{10,12}$/, "Please enter a Valid Number") })).min(1, "At least 1 Phone Number is required").max(2, "Upto 2 Phone Numbers allowed")
                             })}>
 
@@ -92,6 +94,9 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                     </Grid>
                                     <Grid item xs={12} sm={6} >
                                         <Field fullWidth component={TextField} name="country" label="Country *" />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <Field fullWidth name="dob" component={DatePicker} label="Date Of Birth *" openTo="year" views={["year", "month", "date"]} inputVariant="outlined" autoOk="true" size="small" format="DD/MMMM/YYYY" />
                                     </Grid>
 
                                     <Grid item xs={12} sm={12}>
@@ -193,7 +198,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                     </Grid>
                                                     <Grid container justifyContent="center" >
                                                         <Grid item className={classes.bottomMargin}>
-                                                            <Button onClick={() => push({ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' })} variant="outlined" color="primary">Add More Education Details</Button>
+                                                            <Button onClick={() => push({ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: null, toYear: null, city: '', country: '' })} variant="outlined" color="primary">Add More Education Details</Button>
                                                         </Grid>
                                                     </Grid>
                                                 </>
@@ -259,7 +264,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                     </Grid>
                                                     <Grid container justifyContent="center" >
                                                         <Grid item className={classes.bottomMargin}>
-                                                            <Button onClick={() => push({ companyName: '', position: '', achievements: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' })} variant="outlined" color="primary">Add More Experience Details</Button>
+                                                            <Button onClick={() => push({ companyName: '', position: '', achievements: '', fromYear: null, toYear: null, city: '', country: '' })} variant="outlined" color="primary">Add More Experience Details</Button>
                                                         </Grid>
                                                     </Grid>
                                                 </>
@@ -309,7 +314,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                     </Grid>
                                                     <Grid container justifyContent="center" >
                                                         <Grid item className={classes.bottomMargin}>
-                                                            <Button onClick={() => push({ certificateFor: '', certificateIssuer: '', date: new Date() })} variant="outlined" color="primary">Add More Certificates</Button>
+                                                            <Button onClick={() => push({ certificateFor: '', certificateIssuer: '', date: null })} variant="outlined" color="primary">Add More Certificates</Button>
                                                         </Grid>
                                                     </Grid>
                                                 </>
@@ -492,6 +497,9 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <Field fullWidth component={TextField} name="github" label="GitHub Account (optional)" InputProps={{ startAdornment: (<InputAdornment position="start"><GitHubIcon /></InputAdornment>), }} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={12}>
+                                        <Field fullWidth component={TextField} name="personalWebsite" label="Personal website (optional)" InputProps={{ startAdornment: (<InputAdornment position="start"><LanguageIcon /></InputAdornment>), }} />
                                     </Grid>
                                 </Grid>
 

@@ -1,6 +1,7 @@
-import { Typography } from '@material-ui/core';
 import React from 'react';
+import { Typography } from '@material-ui/core';
 import moment from 'moment';
+import EducationCard from './EducationCard';
 
 export default function GeneratedOutput({ recievedData }) {
 
@@ -19,18 +20,18 @@ export default function GeneratedOutput({ recievedData }) {
             <Typography>{contact.number}</Typography>
         )
     }
-    function createEducationField(education) {
+
+    function createEducationCard(education) {
         return (
-            <div>
-                <Typography>{education.institutionName}</Typography>
-                <Typography>{education.degree}</Typography>
-                <Typography>{education.specialization}</Typography>
-                <Typography>{education.percentage}</Typography>
-                {education.fromYear !== null ? returnMomentDate(education.fromYear._d) : null}
-                {education.toYear !== null ? returnMomentDate(education.toYear._d) : null}
-                <Typography>{education.city}</Typography>
-                <Typography>{education.country}</Typography>
-            </div>
+            <EducationCard degree={education.degree}
+                institutionName={education.institutionName}
+                specialization={education.specialization}
+                percentage={education.percentage}
+                fromYear={education.fromYear !== null ? returnMomentDate(education.fromYear._d) : null}
+                toYear={education.toYear !== null ? returnMomentDate(education.toYear._d) : null}
+                city={education.city}
+                country={education.country}
+            />
         )
     }
 
@@ -42,7 +43,7 @@ export default function GeneratedOutput({ recievedData }) {
             <Typography>Last Name is {lastName}</Typography>
             <Typography>Email is {email}</Typography>
             {phoneNumber.map(createPhoneNumberField)}
-            {education.map(createEducationField)}
+            {education.map(createEducationCard)}
 
         </div>
 
