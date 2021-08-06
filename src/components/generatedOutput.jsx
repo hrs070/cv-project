@@ -26,8 +26,8 @@ export default function GeneratedOutput({ recievedData }) {
                 <Typography>{education.degree}</Typography>
                 <Typography>{education.specialization}</Typography>
                 <Typography>{education.percentage}</Typography>
-                {returnMomentDate(education.fromYear._d)}
-                {returnMomentDate(education.toYear._d)}
+                {education.fromYear !== null ? returnMomentDate(education.fromYear._d) : null}
+                {education.toYear !== null ? returnMomentDate(education.toYear._d) : null}
                 <Typography>{education.city}</Typography>
                 <Typography>{education.country}</Typography>
             </div>

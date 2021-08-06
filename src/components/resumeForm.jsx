@@ -52,10 +52,10 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                         <FormikStepper initialValues={{
                             firstName: '', lastName: '', email: '', phoneNumber: [{ number: '' }], city: '',
                             country: '', summary: '', jobTitle: '',
-                            education: [{ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' }],
-                            workExperience: [{ companyName: '', position: '', achievements: '', fromYear: new Date(), toYear: new Date(), city: '', country: '' }],
+                            education: [{ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: null, toYear: null, city: '', country: '' }],
+                            workExperience: [{ companyName: '', position: '', achievements: '', fromYear: null, toYear: null, city: '', country: '' }],
                             keySkills: [{ skill: '' }], projects: [{ projectTitle: '', description: '' }],
-                            certifications: [{ certificateFor: '', certificateIssuer: '', date: new Date() }],
+                            certifications: [{ certificateFor: '', certificateIssuer: '', date: null }],
                             languages: [{ language: '' }], hobbies: [{ hobby: '' }], linkedIn: '', github: ''
                         }}
                             onSubmit={(values) => { onGenerate(values) }}>
@@ -138,6 +138,8 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                     degree: string().required("Degree is Required").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
                                     specialization: string().matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
                                     percentage: string().matches(/^100%?$|^[0-9]{1,2}%?$|^[0-9]{1,2}\.[0-9]{1,2}%?$/, "Enter Percentage or CGPA Obtained"),
+                                    fromYear: string().nullable().required("Joining Date is Required"),
+                                    toYear: string().nullable().required("Passing Year is Required"),
                                     city: string().required("Institution City is Required").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
                                     country: string().required("Institution Country is Required").matches(/^[aA-zZ\s&.]+$/, "Special characters and Numbers are not allowed").max(80, "Max 80 characters allowed"),
                                 })).min(1, "At least 1 Education Detail is required").max(5, "Upto 5 Education Detail accepted")
@@ -172,10 +174,10 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`education[${index}].country`} component={TextField} label="Country *" size="small" />
                                                             </Grid>
                                                             <Grid item xs={6} sm={6}>
-                                                                <Field fullWidth name={`education[${index}].fromYear`} component={DatePicker} label="Started From" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
+                                                                <Field fullWidth name={`education[${index}].fromYear`} component={DatePicker} label="Started From *" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
                                                             </Grid>
                                                             <Grid item xs={6} sm={6}>
-                                                                <Field fullWidth name={`education[${index}].toYear`} component={DatePicker} label="Passing Year" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
+                                                                <Field fullWidth name={`education[${index}].toYear`} component={DatePicker} label="Passing Year *" openTo="year" views={["year", "month"]} inputVariant="outlined" autoOk="true" size="small" />
                                                             </Grid>
 
                                                             <Grid container justifyContent="center">
