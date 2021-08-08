@@ -493,10 +493,10 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                 {/* Social Media */}
                                 <Grid container spacing={3} className={classes.bottomMargin}>
                                     <Grid item xs={12} sm={6}>
-                                        <Field fullWidth component={TextField} name="linkedIn" label="LinkedIn Account (optional)" InputProps={{ startAdornment: (<InputAdornment position="start"><LinkedInIcon color="primary" /></InputAdornment>), }} />
+                                        <Field fullWidth component={TextField} name="linkedIn" label="LinkedIn User Name (optional)" InputProps={{ startAdornment: (<InputAdornment position="start"><LinkedInIcon color="primary" /></InputAdornment>), }} />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <Field fullWidth component={TextField} name="github" label="GitHub Account (optional)" InputProps={{ startAdornment: (<InputAdornment position="start"><GitHubIcon /></InputAdornment>), }} />
+                                        <Field fullWidth component={TextField} name="github" label="GitHub User Name (optional)" InputProps={{ startAdornment: (<InputAdornment position="start"><GitHubIcon /></InputAdornment>), }} />
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
                                         <Field fullWidth component={TextField} name="personalWebsite" label="Personal website (optional)" InputProps={{ startAdornment: (<InputAdornment position="start"><LanguageIcon /></InputAdornment>), }} />
