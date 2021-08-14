@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 import { Grid, Button, Card, CardContent, makeStyles } from '@material-ui/core';
-import EducationCard from './EducationCard';
 import { Page, Text, View, Image, Document, StyleSheet, PDFDownloadLink, PDFViewer, Link } from '@react-pdf/renderer';
 import profileIcon from './images/profile.png';
 import locationIcon from './images/location.png';
@@ -11,7 +10,10 @@ import dobIcon from './images/dob.png';
 import githubIcon from './images/githubIcon.png';
 import linkedinIcon from './images/linkedin.png';
 import websiteIcon from './images/website.png';
-import languageIcon from './images/language.png';
+import summaryIcon from './images/summaryIcon.png';
+import educationIcon from './images/educationIcon.png';
+import workIcon from './images/workIcon.png';
+
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
         margin: "7px 0",
     },
     icons: {
-        width: "20px",
+        width: "22px",
         marginRight: "8px"
     },
     infoGroup: {
@@ -95,8 +97,60 @@ const styles = StyleSheet.create({
     },
     infoGroupSameLine: {
         flexDirection: "row",
-
+        flexWrap: "wrap"
     },
+
+    bodyContainer: {
+        flexDirection: "column",
+        color: "#3a3b38",
+        height: "100%",
+        width: "70%",
+        margin: "20px 20px"
+    },
+    bodySectionContainer: {
+        marginBottom: "20px"
+    },
+    bodySectionHeading: {
+        flexDirection: "row",
+        margin: "0 0 6px 0",
+        fontSize: "14px"
+    },
+    bodySectionHeadingText: {
+        width: "100%",
+        padding: "3px 0",
+        borderTop: "1px solid #a6a6a6",
+        borderBottom: "1px solid #a6a6a6",
+    },
+    bodySectionBody: {
+        marginLeft: "10px",
+        color: "#464646",
+    },
+    mapContainer: {
+        flexDirection: "row",
+        margin: "7px 0",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    left: {
+        width: "30%",
+        fontSize: "11px"
+    },
+    right: {
+        width: "65%"
+    },
+    mapHeading: {
+        color: "#1976d2",
+        fontSize: "13px",
+    },
+    mapSubData: {
+        flexDirection: "row",
+        fontSize: "10px",
+        justifyContent: "flex-start"
+    },
+    mapSubData1: {
+        width: "70%",
+    },
+
     downloadButton: {
         textDecoration: "none",
         color: "white",
@@ -113,12 +167,12 @@ export function GeneratedPDF({ recievedData }) {
 
     function returnMomentDate(date) {
         return (
-            <Text> {moment(date).format('MMMM YYYY')}</Text>
+            <Text> {moment(date).format('MMM YYYY')}</Text>
         )
     }
     function returnMomentDOB(date) {
         return (
-            <Text style={styles.infoData}> {moment(date).format('DD MMMM YYYY')}</Text>
+            <Text style={styles.infoData}> {moment(date).format('DD MMM YYYY')}</Text>
         )
     }
     function createPhoneNumberField(contact) {
@@ -139,15 +193,59 @@ export function GeneratedPDF({ recievedData }) {
 
     function createEducationCard(education) {
         return (
-            <EducationCard degree={education.degree}
-                institutionName={education.institutionName}
-                specialization={education.specialization}
-                percentage={education.percentage}
-                fromYear={education.fromYear !== null ? returnMomentDate(education.fromYear._d) : null}
-                toYear={education.toYear !== null ? returnMomentDate(education.toYear._d) : null}
-                city={education.city}
-                country={education.country}
-            />
+            <>
+                <View style={styles.mapContainer}>
+                    <View style={styles.left}>
+                        <Text>{education.fromYear !== null ? returnMomentDate(education.fromYear._d) : null} - {education.toYear !== null ? returnMomentDate(education.toYear._d) : null}</Text>
+                        <Text>{education.city}, {education.country}</Text>
+                    </View>
+                    <View style={styles.right}>
+                        <Text style={styles.mapHeading}>{education.degree}</Text>
+                        <Text style={styles.mapSubHeading}>{education.institutionName}</Text>
+                        <View style={styles.mapSubData}>
+                            {education.specialization ?
+                                <View style={styles.mapSubData1}>
+                                    <Text>{education.specialization}</Text>
+                                </View>
+                                : null}
+                            <View style={styles.mapSubData2}>
+                                <Text>{education.percentage}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </>
+        )
+    }
+
+    function createWorkCard(work) {
+        return (
+            <>
+                <View style={styles.mapContainer}>
+                    <View style={styles.left}>
+                        {work.fromYear ? <Text>{work.fromYear !== null ? returnMomentDate(work.fromYear._d) : null} - {work.toYear !== null ? returnMomentDate(work.toYear._d) : null}</Text> : null}
+                        <Text>{work.city}, {work.country}</Text>
+                    </View>
+                    <View style={styles.right}>
+                        <Text style={styles.mapHeading}>{work.position}</Text>
+                        <Text style={styles.mapSubHeading}>{work.companyName}</Text>
+                        <View style={styles.mapSubData}>
+                            <Text>{work.achievements}</Text>
+                        </View>
+                    </View>
+                </View>
+            </>
+        )
+    }
+
+    function createProjectCard(project) {
+        return (
+            <>
+
+                <Text style={styles.mapHeading}>{project.projectTitle}</Text>
+                <Text style={styles.mapSubHeading}>{project.description}</Text>
+
+            </>
         )
     }
 
@@ -263,7 +361,7 @@ export function GeneratedPDF({ recievedData }) {
                             </View>
                         </View>
 
-                        {hobbies.length !== 0 ?
+                        {hobbies[0].hobby ?
                             <View style={styles.sectionContainer}>
                                 <Text style={styles.sectionHeading}>Hobby</Text>
                                 <View style={styles.sectionBody}>
@@ -274,13 +372,60 @@ export function GeneratedPDF({ recievedData }) {
                             </View>
                             : null}
 
-
-
                     </View>
 
+
+                    {/* Body Container */}
                     <View style={styles.bodyContainer}>
-                        {education.map(createEducationCard)}
+
+                        <View style={styles.bodySectionContainer}>
+                            <View style={styles.bodySectionHeading}>
+                                <Image src={summaryIcon} style={styles.icons}></Image>
+                                <Text style={styles.bodySectionHeadingText}>SUMMARY</Text>
+                            </View>
+                            <View style={styles.bodySectionBody}>
+                                <Text>{summary}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.bodySectionContainer}>
+                            <View style={styles.bodySectionHeading}>
+                                <Image src={educationIcon} style={styles.icons}></Image>
+                                <Text style={styles.bodySectionHeadingText}>EDUCATION</Text>
+                            </View>
+                            <View style={styles.bodySectionBody}>
+                                {education.map(createEducationCard)}
+                            </View>
+                        </View>
+
+                        {workExperience[0].companyName ?
+                            <View style={styles.bodySectionContainer}>
+                                <View style={styles.bodySectionHeading}>
+                                    <Image src={workIcon} style={styles.icons}></Image>
+                                    <Text style={styles.bodySectionHeadingText}>WORK EXPERIENCE</Text>
+                                </View>
+                                <View style={styles.bodySectionBody}>
+                                    {workExperience.map(createWorkCard)}
+                                </View>
+                            </View>
+                            : null}
+
+
+                        <View style={styles.bodySectionContainer}>
+                            <View style={styles.bodySectionHeading}>
+                                <Image src={workIcon} style={styles.icons}></Image>
+                                <Text style={styles.bodySectionHeadingText}>PROJECTS</Text>
+                            </View>
+                            <View style={styles.bodySectionBody}>
+                                {projects.map(createProjectCard)}
+                            </View>
+                        </View>
+
+
                     </View>
+
+
+
                 </View>
             </Page>
         </Document>
