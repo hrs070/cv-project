@@ -13,6 +13,9 @@ import websiteIcon from './images/website.png';
 import summaryIcon from './images/summaryIcon.png';
 import educationIcon from './images/educationIcon.png';
 import workIcon from './images/workIcon.png';
+import projectIcon from './images/projectIcon.png';
+import certificateIcon from './images/certificateIcon.png';
+import skillsIcon from './images/skillsIcon.png';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -105,7 +108,8 @@ const styles = StyleSheet.create({
         color: "#3a3b38",
         height: "100%",
         width: "70%",
-        margin: "20px 20px"
+        margin: "10px 20px",
+        justifyContent: "center"
     },
     bodySectionContainer: {
         marginBottom: "20px"
@@ -149,6 +153,11 @@ const styles = StyleSheet.create({
     },
     mapSubData1: {
         width: "70%",
+    },
+    skillSection: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-evenly",
     },
 
     downloadButton: {
@@ -217,6 +226,21 @@ export function GeneratedPDF({ recievedData }) {
             </>
         )
     }
+    function createCertificateCard(cetificate) {
+        return (
+            <>
+                <View style={styles.mapContainer}>
+                    <View style={styles.left}>
+                        <Text>{cetificate.date !== null ? returnMomentDate(cetificate.date._d) : null}</Text>
+                    </View>
+                    <View style={styles.right}>
+                        <Text style={styles.mapHeading}>{cetificate.certificateFor}</Text>
+                        <Text style={styles.mapSubHeading}>{cetificate.certificateIssuer}</Text>
+                    </View>
+                </View>
+            </>
+        )
+    }
 
     function createWorkCard(work) {
         return (
@@ -238,13 +262,20 @@ export function GeneratedPDF({ recievedData }) {
         )
     }
 
+    function createSkillsCard(skills) {
+        return (
+            <Text style={[styles.mapHeading, { margin: "5px 10px" }]}>{skills.skill}</Text>
+        )
+    }
+
     function createProjectCard(project) {
         return (
             <>
-
-                <Text style={styles.mapHeading}>{project.projectTitle}</Text>
-                <Text style={styles.mapSubHeading}>{project.description}</Text>
-
+                <View style={{ margin: "7px 0" }}>
+                    <Text style={styles.mapHeading}>{project.projectTitle}</Text>
+                    <Text style={styles.mapSubHeading}>{project.description}</Text>
+                    {project.link ? <Text style={{ fontSize: "10px", marginTop: "2px" }}>Live Demo      <Text style={{ color: "#1976d2" }}>{project.link}</Text></Text> : null}
+                </View>
             </>
         )
     }
@@ -388,16 +419,6 @@ export function GeneratedPDF({ recievedData }) {
                             </View>
                         </View>
 
-                        <View style={styles.bodySectionContainer}>
-                            <View style={styles.bodySectionHeading}>
-                                <Image src={educationIcon} style={styles.icons}></Image>
-                                <Text style={styles.bodySectionHeadingText}>EDUCATION</Text>
-                            </View>
-                            <View style={styles.bodySectionBody}>
-                                {education.map(createEducationCard)}
-                            </View>
-                        </View>
-
                         {workExperience[0].companyName ?
                             <View style={styles.bodySectionContainer}>
                                 <View style={styles.bodySectionHeading}>
@@ -410,10 +431,41 @@ export function GeneratedPDF({ recievedData }) {
                             </View>
                             : null}
 
+                        <View style={styles.bodySectionContainer}>
+                            <View style={styles.bodySectionHeading}>
+                                <Image src={educationIcon} style={styles.icons}></Image>
+                                <Text style={styles.bodySectionHeadingText}>EDUCATION</Text>
+                            </View>
+                            <View style={styles.bodySectionBody}>
+                                {education.map(createEducationCard)}
+                            </View>
+                        </View>
+
+                        {certifications[0].certificateFor ?
+                            <View style={styles.bodySectionContainer}>
+                                <View style={styles.bodySectionHeading}>
+                                    <Image src={certificateIcon} style={styles.icons}></Image>
+                                    <Text style={styles.bodySectionHeadingText}>CERTIFICATIONS</Text>
+                                </View>
+                                <View style={styles.bodySectionBody}>
+                                    {certifications.map(createCertificateCard)}
+                                </View>
+                            </View>
+                            : null}
 
                         <View style={styles.bodySectionContainer}>
                             <View style={styles.bodySectionHeading}>
-                                <Image src={workIcon} style={styles.icons}></Image>
+                                <Image src={skillsIcon} style={styles.icons}></Image>
+                                <Text style={styles.bodySectionHeadingText}>SKILLS &amp; EXPERTIZE</Text>
+                            </View>
+                            <View style={styles.skillSection}>
+                                {keySkills.map(createSkillsCard)}
+                            </View>
+                        </View>
+
+                        <View style={styles.bodySectionContainer}>
+                            <View style={styles.bodySectionHeading}>
+                                <Image src={projectIcon} style={styles.icons}></Image>
                                 <Text style={styles.bodySectionHeadingText}>PROJECTS</Text>
                             </View>
                             <View style={styles.bodySectionBody}>

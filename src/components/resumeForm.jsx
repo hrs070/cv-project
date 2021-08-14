@@ -55,7 +55,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                             country: '', summary: '', jobTitle: '', dob: null,
                             education: [{ degree: '', institutionName: '', specialization: '', percentage: '', fromYear: null, toYear: null, city: '', country: '' }],
                             workExperience: [{ companyName: '', position: '', achievements: '', fromYear: null, toYear: null, city: '', country: '' }],
-                            keySkills: [{ skill: '' }], projects: [{ projectTitle: '', description: '' }],
+                            keySkills: [{ skill: '' }], projects: [{ projectTitle: '', description: '', link: '' }],
                             certifications: [{ certificateFor: '', certificateIssuer: '', date: null }],
                             languages: [{ language: '' }], hobbies: [{ hobby: '' }], linkedIn: '', github: '', personalWebsite: '',
                         }}
@@ -387,6 +387,9 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                                 <Field fullWidth name={`projects[${index}].projectTitle`} component={TextField} label="Project Title *" size="small" />
                                                             </Grid>
                                                             <Grid item xs={12} sm={12}>
+                                                                <Field fullWidth name={`projects[${index}].link`} component={TextField} label="Project Link" size="small" />
+                                                            </Grid>
+                                                            <Grid item xs={12} sm={12}>
                                                                 <Field fullWidth name={`projects[${index}].description`} component={TextField} label="Project Description *" variant="outlined" size="small" multiline minRows={2} maxRows={10} />
                                                             </Grid>
 
@@ -402,7 +405,7 @@ export default function ResumeForm({ onGenerate, displayCondition }) {
                                                     </Grid>
                                                     <Grid container justifyContent="center" >
                                                         <Grid item className={classes.bottomMargin}>
-                                                            <Button onClick={() => push({ skill: '' })} variant="outlined" color="primary">Add More Projects</Button>
+                                                            <Button onClick={() => push({ projectTitle: '', description: '', link: '' })} variant="outlined" color="primary">Add More Projects</Button>
                                                         </Grid>
                                                     </Grid>
                                                 </>
