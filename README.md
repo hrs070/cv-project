@@ -8,4 +8,5 @@
 - [Formik](https://formik.org/) 
 - [react-pdf/renderer](https://react-pdf.org/)
 
-Clone the repository and go to package.json. Remove homepage, gh-pages, predeploy and predeploy
+Clone the repository and go to package.json. Remove homepage, gh-pages, predeploy and deploy inorder to run the dev server.
+Then run `npm start`
