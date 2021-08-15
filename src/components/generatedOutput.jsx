@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Grid, Button, Card, CardContent, makeStyles } from '@material-ui/core';
+import { Grid, Button, Card, Box, Typography, CardContent, makeStyles } from '@material-ui/core';
 import { Page, Text, View, Image, Document, StyleSheet, PDFDownloadLink, PDFViewer, Link } from '@react-pdf/renderer';
 import profileIcon from './images/profile.png';
 import locationIcon from './images/location.png';
@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
         "&:last-child": {
             paddingBottom: 0
         },
+    },
+    gridContainer: {
+        minHeight: "300px",
     },
     downloadButton: {
         marginBottom: theme.spacing(3)
@@ -492,12 +495,28 @@ export default function GeneratedOutput({ recievedData }) {
             <Grid container alignItems="center" justifyContent="center" >
                 <Card raised={true} className={classes.card}>
                     <CardContent className={classes.cardContent}>
-                        <PDFViewer width="100%" height="900px" showToolbar="false">
-                            <GeneratedPDF recievedData={recievedData} />
-                        </PDFViewer>
+                        <Box display={{ xs: 'none', sm: 'block' }}>
+                            <PDFViewer width="100%" height="900px" showToolbar="false">
+                                <GeneratedPDF recievedData={recievedData} />
+                            </PDFViewer>
+                        </Box>
                     </CardContent>
                 </Card>
             </Grid>
+
+            <Box display={{ xs: 'block', sm: 'none' }}>
+                <Grid container alignItems="center" justifyContent="center" >
+                    <Card raised={true} className={classes.card}>
+                        <CardContent>
+                            <Grid container alignItems="center" justifyContent="center" className={classes.gridContainer}>
+                                <Grid item>
+                                    <Typography align="center" variant="h5" color="textSecondary">PDF Preview is not available on mobile devices. Download the PDF instead.</Typography>
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Box>
 
             <Button variant="contained" color="primary" className={classes.downloadButton}>
                 <PDFDownloadLink document={<GeneratedPDF recievedData={recievedData} />} fileName={`${recievedData.firstName}-resume.pdf`} style={styles.downloadButton}>
